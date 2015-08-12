@@ -58,7 +58,7 @@ public class Game {
 		p3.x=p3.x=2;
 		
 		if(board.get(p1) == board.get(p2) && board.get(p2) == board.get(p3) && board.get(p2)!=0) {
-			System.out.println("diag1");
+			//System.out.println("diag1");
 			return board.get(p1);
 		}
 		
@@ -89,10 +89,11 @@ public class Game {
 		if(board.isValid(mov)) {
 			board.put(mov,currentPlayer);
 			currentPlayer=currentPlayer*(-1);
-			board.print();
+			//board.print();
 			int p  = hasEnded();
+			//board.print();
 			if(p != 0) {
-				System.out.println("gano " + p);
+				//System.out.println("gano " + p);
 			}
 			return true;
 		}

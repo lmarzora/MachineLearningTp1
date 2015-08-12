@@ -18,10 +18,10 @@ public class Board {
 	}
 	
 	public boolean isValid(Point mov){
-		System.out.println("x=" + mov.getX()+ ",y=" + mov.getY());
+		//System.out.println("x=" + mov.getX()+ ",y=" + mov.getY());
 		if(mov.x>=0 && mov.x<=2 && mov.y>=0 && mov.y<=2) {
 			if(board[mov.x][mov.y] == 0) { 
-				System.out.println("true");
+				//System.out.println("true");
 				return true;
 			}
 		}

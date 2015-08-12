@@ -39,10 +39,23 @@ import learning.YoungGrasshopper;
 	    JButton second;
 	    String s1 = "";
 	    
-	    public GameApplet()
-	    {
+	    public GameApplet() {
 	    	this.game = new Game();
-	    	this.student = new YoungGrasshopper(game.getBoard());
+	    	student = new YoungGrasshopper(game.getBoard(),1);
+	    	startGameApplet();
+	    }
+	    public GameApplet(YoungGrasshopper pepe) {
+	    	this.game = new Game();
+	    	student = pepe;
+	    	student.setBoard(game.getBoard());
+	    	startGameApplet();
+	    }
+	    
+	    
+	    
+	    public void startGameApplet()
+	    {
+	    	student.setBoard(game.getBoard());
 	        this.f = new JFrame("Tic Tac Toe");
 	        this.first = new JButton("CLEAR");
 	        this.second = new JButton("EXIT");
@@ -94,7 +107,7 @@ import learning.YoungGrasshopper;
 	        {
 	            this.f.setVisible(false);
 	            bug = 0;
-	            new GameApplet();
+	            startGameApplet();
 	        }
 	        if (ae.getSource() == this.second)
 	        {
@@ -229,7 +242,7 @@ import learning.YoungGrasshopper;
 	        }
 	        flag*=-1;
 	        if(fend)
-	        	new GameApplet();
+	        	startGameApplet();
 	    }
 	    
 	    public void mouseReleased(MouseEvent e)

@@ -10,41 +10,51 @@ public class YoungGrasshopper {
 	Deque<int[]> game;
 	double[] weights;
 	Board board;
-	int jug = 1	;
+	int jug 	;
 	
-	public YoungGrasshopper(Board b) {
+	public YoungGrasshopper(Board b, int jug) {
+		this.jug = jug;
 		this.weights = new double[4];
 		for (double i : weights) {
 			i = 0;
 		}
+		board = new Board();
 		this.game = new LinkedList<int[]>();
-		this.board = b;
+		setBoard(b);
 		
 	}
 	public void setBoard(Board b) {
-		this.board = b;
+		Point p = new Point();
+		for(int i = 0 ; i < 3 ; i++) {
+			for(int j = 0 ; j < 3 ; j++) {
+				p.x=i;p.y=j;
+				board.put(p, b.get(p));
+			}
+		}
 	}
 	
 	public Point getMove() {
 		Point mov = new Point();
 		Point best = new Point();
 		double val = 0;
-		double max = -100000000;
+		double max = 0;
+		boolean first= true;
 		for( int i = 0 ; i < 3 ; i ++) {
 			for ( int j = 0 ; j < 3 ; j++) {
 				mov.x=i;mov.y=j;
 				if(board.isValid(mov)) {
 					board.put(mov, jug);
-					board.print();
+					//board.print();
 					int[] vars = getVars(board);
 					val = vAprox(vars);
-					System.out.println("val="+ val);
-					System.out.println("max="+ max);
-					if (val > max) {
+					if(first) {
+						max = val;
+						first = false;
+					}
+					if (val >= max) {
 						max = val;
 						best.x = mov.x;
 						best.y = mov.y;
-
 						
 					}
 					board.undo(mov);
@@ -53,7 +63,9 @@ public class YoungGrasshopper {
 		}
 		//guardar paso
 		game.push(getVars(board));
+		//System.out.println(best);
 		System.out.println(best);
+		board.print();
 		return best;
 
 	}
@@ -153,9 +165,16 @@ public class YoungGrasshopper {
 		return currentWeights;
 	}
 	
+	public void setJug(int jug) {
+		this.jug = jug;
+	}
 	
 	public void learn(double end) {
-		weights = updateWeights(getTrainExamples(end));
+		double t = jug*end;
+		weights = updateWeights(getTrainExamples(t));
+		printWeights();
+	}
+	public void printWeights() {
 		for (double weight : weights) {
 			System.out.print(weight + " ");
 		}
