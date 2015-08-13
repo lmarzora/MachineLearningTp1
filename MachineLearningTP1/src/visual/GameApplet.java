@@ -105,7 +105,7 @@ import learning.YoungGrasshopper;
 	    {
 	        if (ae.getSource() == this.first)
 	        {
-	            this.f.setVisible(false);
+	            this.f.dispose();
 	            bug = 0;
 	            startGameApplet();
 	        }
@@ -133,7 +133,6 @@ import learning.YoungGrasshopper;
 	    
 	    public void mouseClicked(MouseEvent e) { Graphics2D g2;
 	    	boolean fend = false;
-	    	System.out.println(flag);
 		    int x = e.getX();
 	        int y = e.getY();
 	        Point p = new Point();
@@ -148,10 +147,11 @@ import learning.YoungGrasshopper;
 		        	return;
 		        }
         	int end = game.hasEnded();
-        	System.out.println("end " + end);
     		if(end!=-2) {
+    			student.setBoard(game.getBoard());
+       			student.learn(end);		
     			game.clearBoard();
-    			student.learn(end);
+ 
     			fend = true;
     		}
 	        
@@ -241,9 +241,12 @@ import learning.YoungGrasshopper;
 	            }
 	        }
 	        flag*=-1;
-	        if(fend)
-	        	startGameApplet();
-	    }
+	        if(fend) {
+	        	 this.f.dispose();
+	        	 startGameApplet();
+		    }
+	        }
+	        	
 	    
 	    public void mouseReleased(MouseEvent e)
 	    {
