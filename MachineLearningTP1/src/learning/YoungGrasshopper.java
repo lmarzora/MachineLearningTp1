@@ -20,7 +20,7 @@ public class YoungGrasshopper {
 		this.name = name;
 		this.sensei= new Sensei();
 		this.jug = jug;
-		if(this instanceof Fixed || this instanceof Dummy) {
+		if(this instanceof Fixed	) {
 			//System.out.println("aaa");
 		}else {
 			if(Saver.fileExists(name))
@@ -70,7 +70,7 @@ public class YoungGrasshopper {
 					board.put(mov, jug);
 
 					int[] vars = sensei.getVars(board,jug);
-					val = vAprox(vars);
+					val = sensei.vAprox(vars,weights);
 					if(first) {
 						max = val;
 						first = false;
@@ -81,6 +81,10 @@ public class YoungGrasshopper {
 						best.y = mov.y;
 						
 					}
+					
+					System.out.println(val);
+					board.print();
+					printVars();
 					board.undo(mov);
 				}
 			}
@@ -93,77 +97,31 @@ public class YoungGrasshopper {
 		return best;
 
 	}
-	private void printVars(int[] vars) {
-		for (int var : vars) {
-			System.out.print(var + " ");
-		}
-		System.out.println("");
-	}
-	private double vAprox(int[] vars) {
-						
-		return weights[0]*vars[0] + weights[1]*vars[1] + weights[2]*vars[2]*vars[2] + weights[3]*vars[3]*vars[3] +weights[4]*vars[4]*vars[4]*vars[4]  ;
-	}
+
 	
-	
+	private void printVars() {
+		for(int i: sensei.getVars(board, jug))
+			System.out.print(i + " ");
+		System.out.println();
+	}
 		
 	
 	public double [] getWeigths() {
 		
 		return weights;
 	}
-	/*
-	private List<TrainExample> getTrainExamples(double end) {
-		List<TrainExample> examples = new LinkedList<TrainExample>();
-		int[] current;
-		while(!game.isEmpty()) {
-			current = game.pop();
-			examples.add( new TrainExample(current, end));			
-		}
-		for (TrainExample trainExample : examples) {
-			for (int var : trainExample.vars) {
-				System.out.print(var + " ");
-			}
-			System.out.println("");
-			System.out.println(trainExample.val);
-		}
-		return examples;
-	}
 	
-	private double[] updateWeights(List<TrainExample> examples) {
-		double[] currentWeights = new double[6];
-		for ( int i = 0 ; i < 6 ; i++) {
-			currentWeights[i]=weights[i];
-		}
-		
-		for (TrainExample trainExample : examples) {
-			for (int i = 0 ; i < 6 ; i++) {
-				currentWeights[i] = currentWeights[i] + train*(trainExample.val - vAprox(trainExample.vars))*trainExample.vars[i];
-			}
-		}
-		
-		return currentWeights;
-	}
-*/	
-	public void setJug(int jug) {
-		this.jug = jug;
-	}
+
 	public int getJug() {
 		return jug;
 	}
 	public void learn(double end) {
 
-		if(end>0) {
-			System.out.println("gane");
-		}
-		else
-			if(end<0) {
-				System.out.println("perdi");
-			}
-			else
-				System.out.println("empate");
+		board.print();
 		game.push(sensei.getVars(board,jug));
-		double t = end*10;
-		weights = sensei.teach(game,end,weights);
+		System.out.println(jug);
+		double t = jug*end;
+		weights = sensei.teach(game,t,weights);
 		Saver.saveWeights(weights, name);
 		Saver.readWeights(name, weights);
 

@@ -4,11 +4,11 @@ import gameLogic.Board;
 
 public class Fixed extends YoungGrasshopper {
 
-	double[] fixed = {5,-7,20,-100,10000,-10000};
+	double[] fixed = {1,-2,5,-10,30,0};
 	public Fixed(Board b, int jug, String name) {
 		super(b, jug, name);
 		this.weights=fixed;
-		printWeights();
+		//printWeights();
 		// TODO Auto-generated constructor stub
 	}
 

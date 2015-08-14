@@ -22,9 +22,7 @@ public class Dummy extends YoungGrasshopper {
 		
 		return mov;
 	}
-	public void learn(double end) {
-		return;
-	}
+
 	
 	
 }

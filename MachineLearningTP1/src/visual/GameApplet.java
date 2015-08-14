@@ -32,7 +32,6 @@ import learning.YoungGrasshopper;
 		YoungGrasshopper student;
 	    JFrame f;
 	    int flag = 1;
-	    int jug;
 	    int n;
 	    int m;
 	    int i = 0;
@@ -41,19 +40,18 @@ import learning.YoungGrasshopper;
 	    JButton first;
 	    JButton second;
 	    String s1 = "";
-	    
+
 	    public GameApplet() {
 	    	this.game = new Game();
-	    	student = new YoungGrasshopper(game.getBoard(),1,"pepe");
+	    	student = new YoungGrasshopper(game.getBoard(),1,"test1");
 	    	//student = new Fixed(game.getBoard(), 1, "fixed");
-	    	//student = new Dummy(game.getBoard(),1);
+	    	//student = new Dummy(game.getBoard(),1,"fafaf");
 	    	startGameApplet();
 	    }
 	    public GameApplet(YoungGrasshopper pepe) {
 	    	this.game = new Game();
 	    	student = pepe;
 	    	student.setBoard(game.getBoard());
-	    	this.jug=student.getJug();
 	    	startGameApplet();
 	    }
 	    
@@ -142,18 +140,21 @@ import learning.YoungGrasshopper;
 		    int x = e.getX();
 	        int y = e.getY();
 	        Point p = new Point();
-	        jug = student.getJug()*(-1);
 	        if(this.flag==1) {
 	        	student.setBoard(game.getBoard());
 	        	p = student.getMove();
 	        	x = p.x  * 200 + 50;
 	        	y = p.y * 200 + 50;
-	        	jug = student.getJug();
-	        }
-	        Point mov = new Point(x/200,y/200);
-		        if(!game.play(mov,flag)) {
+	        	Point mov = new Point(x/200,y/200);
+		        if(!game.play(mov,student.getJug())) {
 		        	return;
 		        }
+	        }else {
+	        	Point mov = new Point(x/200,y/200);
+		        if(!game.play(mov,student.getJug()*-1)) {
+		        	return;
+		        }
+	        }
         	int end = game.hasEnded();
     		if(end!=-2) {
     			student.setBoard(game.getBoard());
@@ -251,7 +252,7 @@ import learning.YoungGrasshopper;
 	        flag*=-1;
 	        if(fend) {
 	        	 this.f.dispose();
-	        	 student.setJug(student.getJug()*-1);
+	        	 student.printWeights();
 	        	 startGameApplet();
 		    }
 	        }
