@@ -14,12 +14,14 @@ public class YoungGrasshopper {
 	private double train;
 	private Sensei sensei;
 	private String name;
-	
+	double p;
+	double m;
 	public YoungGrasshopper(Board b, int jug, String name) {
 		//Saver.check();
 		this.name = name;
 		this.sensei= new Sensei();
 		this.jug = jug;
+		this.m=1.0;
 		if(this instanceof Fixed	) {
 			//System.out.println("aaa");
 		}else {
@@ -53,10 +55,19 @@ public class YoungGrasshopper {
 		}
 	}
 	
-	public Point getMove() {
+	public Point getMoveRand() {
+		Point mov = new Point();
 
-		game.push(sensei.getVars(board,jug));
-
+		Random rand = new Random();
+		do{
+			mov.x = rand.nextInt(3);
+			mov.y = rand.nextInt(3);
+		}while(!board.isValid(mov));
+		
+		return mov;
+	}
+	
+	public Point getMoveV() {
 		Point mov = new Point();
 		Point best = new Point();
 		double val = 0;
@@ -82,20 +93,33 @@ public class YoungGrasshopper {
 						
 					}
 					
-					System.out.println(val);
-					board.print();
-					printVars();
 					board.undo(mov);
 				}
 			}
 		}
-		//guardar paso
-		board.put(best,jug);
-	
-		game.push(sensei.getVars(board, jug));
+
 
 		return best;
 
+	}
+	
+	
+	public Point getMove() {
+		p = Math.random();
+		
+		Point mov;
+		if(p>(1/m)) {
+			mov = getMoveV();
+		}
+		else
+			mov = getMoveRand();
+					
+		board.put(mov,jug);
+		
+		game.push(sensei.getVars(board, jug));
+			m += 0.001;
+			System.out.println(m);
+			return mov;
 	}
 
 	
@@ -117,9 +141,9 @@ public class YoungGrasshopper {
 	}
 	public void learn(double end) {
 
-		board.print();
+		//board.print();
 		game.push(sensei.getVars(board,jug));
-		System.out.println(jug);
+		//System.out.println(jug);
 		double t = jug*end;
 		weights = sensei.teach(game,t,weights);
 		Saver.saveWeights(weights, name);

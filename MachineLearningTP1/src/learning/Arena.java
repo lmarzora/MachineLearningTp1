@@ -29,7 +29,7 @@ public class Arena {
 		int dummy = 20000;
 		int hopper = 30000;
 		int end = 10000;
-		int cant = 10000 ;
+		int cant = 100000 ;
 		List<Integer> history = new ArrayList<Integer>(cant+1);
 		while(count < cant) {
 			while(game.hasEnded()==-2) {
@@ -51,10 +51,10 @@ public class Arena {
 			history.add(game.hasEnded());
 			game.clearBoard();
 			count ++;
-			System.out.println(game.hasEnded());
-			student1.printWeights();
-			student2.printWeights();
-			
+			//System.out.println(game.hasEnded());
+			//student1.printWeights();
+			//student2.printWeights();
+			System.out.println(count);
 			if(count == fix) {
 				student1 = new Fixed(game.getBoard(),jug2,"fixed");
 			}
@@ -64,7 +64,7 @@ public class Arena {
 
 		//student2.setWeights(student1.getWeigths());
 		student2 = new YoungGrasshopper(game.getBoard(), jug1, "hop2");
-		Saver.learningCurve(history, "test3");
+		Saver.learningCurve(history, "test1");
  		GameApplet g = new GameApplet(student2);
 	}
 	

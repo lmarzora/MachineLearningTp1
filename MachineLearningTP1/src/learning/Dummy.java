@@ -12,17 +12,9 @@ public class Dummy extends YoungGrasshopper {
 		// TODO Auto-generated constructor stub
 	}
 	public Point getMove() {
-		Point mov = new Point();
-
-		Random rand = new Random();
-		do{
-			mov.x = rand.nextInt(3);
-			mov.y = rand.nextInt(3);
-		}while(!board.isValid(mov));
-		
-		return mov;
+		return getMoveRand();
 	}
 
-	
+
 	
 }
