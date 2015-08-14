@@ -8,14 +8,16 @@ public class Arena {
 	private YoungGrasshopper student2;
 	private YoungGrasshopper dummy;
 	private Game game;
-	
+	double[] weights = {0.1,-0.1,0.5,-0.5,1,-1};
 	public Arena() {
 		game = new Game();
-		int jug1=1;
-		int jug2=-1;
+		int jug1=-1;
+		int jug2= 1;
 		
-		student1 = new Dummy(game.getBoard(),jug1);
-		student2 = new YoungGrasshopper(game.getBoard(),jug2);
+		student1 = new Fixed(game.getBoard(),jug1,"fixed",weights);
+		//student1 = new Dummy(game.getBoard(),jug1);
+		student2 = new YoungGrasshopper(game.getBoard(),jug1,"hop1");
+		//student1 = new YoungGrasshopper(game.getBoard(),jug2,"hop2");
 
 		int turn = 1;
 		int count = 0;
@@ -24,7 +26,7 @@ public class Arena {
 		int endSession3 = 60000;
 		int endSession4 = 80000;
 		int end = 100000;
-		int cant = 120000;
+		int cant = 1;
 		while(count < cant) {
 			while(game.hasEnded()==-2) {
 				student1.setBoard(game.getBoard());
@@ -45,7 +47,7 @@ public class Arena {
 			System.out.println(count);
 			student1.setJug(jug2);
 			student2.setJug(jug1);
-			
+			/*
 			if ( count == endSession1 || count == endSession3 || count == end) {
 				student1 = new YoungGrasshopper(game.getBoard(),jug2);
 				student1.setWeights(student2.getWeigths());
@@ -54,6 +56,8 @@ public class Arena {
 				student1 = new Dummy(game.getBoard(),jug2);
 
 			}
+			
+			 */
 		
 		}
 		

@@ -7,19 +7,28 @@ import gameLogic.Board;
 
 public class YoungGrasshopper {
 	
-	Deque<int[]> game;
-	double[] weights;
-	Board board;
-	int jug 	;
-	double train;
+	private Deque<int[]> game;
+	protected double[] weights;
+	protected Board board;
+	private int jug 	;
+	private double train;
+	private Sensei sensei;
+	private String name;
 	
-	public YoungGrasshopper(Board b, int jug) {
-		this.train = 0.001;
+	public YoungGrasshopper(Board b, int jug, String name) {
+		this.name = name;
+		this.sensei= new Sensei();
 		this.jug = jug;
-		this.weights = new double[5];
-		for (double i : weights) {
-		i = 0;
+		this.weights = new double[6];
+		if(this instanceof Fixed || this instanceof Dummy) {
+			System.out.println("aaa");
+		}else
+			if(Saver.fileExists(name))
+				weights = Saver.readWeights(name, weights);
+		if(weights == null) {
+			this.weights = new double[6];
 		}
+		printWeights();
 		board = new Board();
 		this.game = new LinkedList<int[]>();
 		setBoard(b);
@@ -45,6 +54,7 @@ public class YoungGrasshopper {
 	}
 	
 	public Point getMove() {
+		System.out.println(jug);
 		game.push(getVars(board));
 		//board.print();
 		//printVars(getVars(board));
@@ -78,6 +88,7 @@ public class YoungGrasshopper {
 		//guardar paso
 		board.put(best,jug);
 		//board.print();
+		//System.out.println(max);
 		//printVars(getVars(board));
 		game.push(getVars(board));
 		//System.out.println(best);
@@ -99,7 +110,7 @@ public class YoungGrasshopper {
 	
 	int [] getVars(Board board) {
 		
-		int [] vars = new int[5];
+		int [] vars = new int[6];
 		for (int i : vars) {
 			i = 0;
 		}
@@ -149,19 +160,22 @@ public class YoungGrasshopper {
 			
 			if(sum==2*jug) {
 				vars[2]++;
-				//vars[0]++;
+				vars[0]++;
 			}
 			
 			
 			if(sum==-2*jug) {
 				vars[3]++;
-				//vars[1]++;
+				vars[1]++;
 			}
 			
 			if(sum==3*jug) {
 				vars[4]++;
 			}
 			
+			if(sum==-3*jug) {
+				vars[5]++;
+			}
 
 		}
 		return vars;
@@ -172,7 +186,7 @@ public class YoungGrasshopper {
 		
 		return weights;
 	}
-	
+	/*
 	private List<TrainExample> getTrainExamples(double end) {
 		List<TrainExample> examples = new LinkedList<TrainExample>();
 		int[] current;
@@ -180,42 +194,47 @@ public class YoungGrasshopper {
 			current = game.pop();
 			examples.add( new TrainExample(current, end));			
 		}
-		/*for (TrainExample trainExample : examples) {
+		for (TrainExample trainExample : examples) {
 			for (int var : trainExample.vars) {
 				System.out.print(var + " ");
 			}
 			System.out.println("");
 			System.out.println(trainExample.val);
-		}*/
+		}
 		return examples;
 	}
 	
 	private double[] updateWeights(List<TrainExample> examples) {
-		double[] currentWeights = new double[5];
-		for ( int i = 0 ; i < 5 ; i++) {
+		double[] currentWeights = new double[6];
+		for ( int i = 0 ; i < 6 ; i++) {
 			currentWeights[i]=weights[i];
 		}
 		
 		for (TrainExample trainExample : examples) {
-			for (int i = 0 ; i < 5 ; i++) {
+			for (int i = 0 ; i < 6 ; i++) {
 				currentWeights[i] = currentWeights[i] + train*(trainExample.val - vAprox(trainExample.vars))*trainExample.vars[i];
 			}
 		}
 		
 		return currentWeights;
 	}
-	
+*/	
 	public void setJug(int jug) {
 		this.jug = jug;
 	}
-	
+	public int getJug() {
+		return jug;
+	}
 	public void learn(double end) {
 		//board.print();
 		//printVars(getVars(board));
 		game.push(getVars(board));
-		double t = jug*end;
-		weights = updateWeights(getTrainExamples(t));
-		printWeights();
+		double t = jug*end*10;
+		weights = sensei.teach(game,end,weights);
+		Saver.saveWeights(weights, name);
+		Saver.readWeights(name, weights);
+		//printWeights();
+		//printWeights();
 	}
 	public void printWeights() {
 		for (double weight : weights) {

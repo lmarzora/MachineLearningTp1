@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 	import javax.swing.JOptionPane;
 
 import gameLogic.Game;
+import learning.Dummy;
 import learning.YoungGrasshopper;
 
 	public class GameApplet extends Applet
@@ -41,7 +42,8 @@ import learning.YoungGrasshopper;
 	    
 	    public GameApplet() {
 	    	this.game = new Game();
-	    	student = new YoungGrasshopper(game.getBoard(),1);
+	    	student = new YoungGrasshopper(game.getBoard(),1,"pepe");
+	    	//student = new Dummy(game.getBoard(),1);
 	    	startGameApplet();
 	    }
 	    public GameApplet(YoungGrasshopper pepe) {
@@ -243,6 +245,7 @@ import learning.YoungGrasshopper;
 	        flag*=-1;
 	        if(fend) {
 	        	 this.f.dispose();
+	        	 student.setJug(student.getJug()*-1);
 	        	 startGameApplet();
 		    }
 	        }
@@ -265,9 +268,10 @@ import learning.YoungGrasshopper;
 	    public void mousePressed(MouseEvent e) {
 	        System.out.print("");
 	    }
-	    
+	    /*
 	    public static void main(String[] args)
 	    {
 	        new GameApplet();
 	    }
+	    */
 	}
