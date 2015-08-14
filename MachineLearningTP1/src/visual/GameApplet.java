@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 
 import gameLogic.Game;
 import learning.Dummy;
+import learning.Fixed;
 import learning.YoungGrasshopper;
 
 	public class GameApplet extends Applet
@@ -31,6 +32,7 @@ import learning.YoungGrasshopper;
 		YoungGrasshopper student;
 	    JFrame f;
 	    int flag = 1;
+	    int jug;
 	    int n;
 	    int m;
 	    int i = 0;
@@ -43,6 +45,7 @@ import learning.YoungGrasshopper;
 	    public GameApplet() {
 	    	this.game = new Game();
 	    	student = new YoungGrasshopper(game.getBoard(),1,"pepe");
+	    	//student = new Fixed(game.getBoard(), 1, "fixed");
 	    	//student = new Dummy(game.getBoard(),1);
 	    	startGameApplet();
 	    }
@@ -50,6 +53,7 @@ import learning.YoungGrasshopper;
 	    	this.game = new Game();
 	    	student = pepe;
 	    	student.setBoard(game.getBoard());
+	    	this.jug=student.getJug();
 	    	startGameApplet();
 	    }
 	    
@@ -138,14 +142,16 @@ import learning.YoungGrasshopper;
 		    int x = e.getX();
 	        int y = e.getY();
 	        Point p = new Point();
+	        jug = student.getJug()*(-1);
 	        if(this.flag==1) {
 	        	student.setBoard(game.getBoard());
 	        	p = student.getMove();
 	        	x = p.x  * 200 + 50;
 	        	y = p.y * 200 + 50;
+	        	jug = student.getJug();
 	        }
 	        Point mov = new Point(x/200,y/200);
-		        if(!game.play(mov)) {
+		        if(!game.play(mov,flag)) {
 		        	return;
 		        }
         	int end = game.hasEnded();

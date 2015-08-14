@@ -13,7 +13,10 @@ public class Saver {
 		File f = new File(s+name+".ser");
 		return f.exists();
 	}
-	
+	public static void check() {
+		File f = new File(".");
+		System.out.println(f.getAbsolutePath());
+	}
 	
 	public static double[] readWeights(String fileName , double[] weights) {
 		

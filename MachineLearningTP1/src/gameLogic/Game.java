@@ -85,11 +85,9 @@ public class Game {
 	}
 
 
-	public boolean play(Point mov) {
+	public boolean play(Point mov,int jug) {
 		if(board.isValid(mov)) {
-			board.put(mov,currentPlayer);
-			currentPlayer=currentPlayer*(-1);
-			//board.print();
+			board.put(mov,jug);
 			int p  = hasEnded();
 			//board.print();
 			if(p != 0) {

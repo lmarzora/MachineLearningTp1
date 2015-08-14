@@ -13,7 +13,7 @@ public class Sensei {
 	double train;
 	
 	public Sensei() {
-		this.train = 0.01;
+		this.train = 0.001;
 	}
 	
 	public double[] teach(Deque<int[]> game, double end , double[] weights) {
@@ -41,18 +41,14 @@ public class Sensei {
 	}
 	
 	private double[] updateWeights(List<TrainExample> examples , double[] weights) {
-		double[] currentWeights = new double[6];
-		for ( int i = 0 ; i < 6 ; i++) {
-			currentWeights[i]=weights[i];
-		}
-		
+
 		for (TrainExample trainExample : examples) {
 			for (int i = 0 ; i < 6 ; i++) {
-				currentWeights[i] = currentWeights[i] + train*(trainExample.val - vAprox(trainExample.vars,weights))*trainExample.vars[i];
+				weights[i] = weights[i] + train*(trainExample.val - vAprox(trainExample.vars,weights))*trainExample.vars[i];
 			}
 		}
 		
-		return currentWeights;
+		return weights;
 	}
 	
 	
@@ -105,34 +101,34 @@ public class Sensei {
 		
 		if(sum!=0) {
 	
-			
+			//lineas abiertas mias
 			if(sum==1*jug) {
 				if(check0==0)
 					vars[0]++;
 			}
 			
-			
+			//lineas abiertas adversario
 			if(sum==-1*jug) {
 				if(check0==0)
 					vars[1]++;
 			}
 			
-			
+			//lineas casi com'pletas mias
 			if(sum==2*jug) {
 				vars[2]++;
 				vars[0]++;
 			}
 			
-			
+			//lineas casi completas adversario
 			if(sum==-2*jug) {
 				vars[3]++;
 				vars[1]++;
 			}
-			
+			//gane
 			if(sum==3*jug) {
 				vars[4]++;
 			}
-			
+			//perdi
 			if(sum==-3*jug) {
 				vars[5]++;
 			}
