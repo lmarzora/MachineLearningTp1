@@ -11,10 +11,10 @@ public class Dummy extends YoungGrasshopper {
 		super(b, jug, name);
 		// TODO Auto-generated constructor stub
 	}
-	public Point getMove() {
+	public Point getMoveTrain(boolean b) {
+		
 		return getMoveRand();
 	}
-
 
 	
 }

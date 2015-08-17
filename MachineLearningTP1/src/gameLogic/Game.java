@@ -86,13 +86,12 @@ public class Game {
 
 
 	public boolean play(Point mov,int jug) {
+	
+		
 		if(board.isValid(mov)) {
 			board.put(mov,jug);
-			int p  = hasEnded();
+			currentPlayer*=-1;
 			//board.print();
-			if(p != 0) {
-				//System.out.println("gano " + p);
-			}
 			return true;
 		}
 		return false;

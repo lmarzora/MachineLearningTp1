@@ -43,9 +43,9 @@ import learning.YoungGrasshopper;
 
 	    public GameApplet() {
 	    	this.game = new Game();
-	    	student = new YoungGrasshopper(game.getBoard(),1,"test1");
+	    	//student = new YoungGrasshopper(game.getBoard(),1,"juan");
 	    	//student = new Fixed(game.getBoard(), 1, "fixed");
-	    	//student = new Dummy(game.getBoard(),1,"fafaf");
+	    	student = new Dummy(game.getBoard(),1,"fafaf");
 	    	startGameApplet();
 	    }
 	    public GameApplet(YoungGrasshopper pepe) {
@@ -54,12 +54,19 @@ import learning.YoungGrasshopper;
 	    	student.setBoard(game.getBoard());
 	    	startGameApplet();
 	    }
-	    
+	    public GameApplet(YoungGrasshopper pepe,int flag) {
+	    	this.game = new Game();
+	    	student = pepe;
+	    	student.setBoard(game.getBoard());
+	    	this.flag=flag;
+	    	startGameApplet();
+	    }
 	    
 	    
 	    public void startGameApplet()
 	    {
 	    	student.setBoard(game.getBoard());
+	    	student.getBoard().print();
 	        this.f = new JFrame("Tic Tac Toe");
 	        this.first = new JButton("CLEAR");
 	        this.second = new JButton("EXIT");
@@ -136,29 +143,32 @@ import learning.YoungGrasshopper;
 	    public void windowDeiconified(WindowEvent de) {  }
 	    
 	    public void mouseClicked(MouseEvent e) { Graphics2D g2;
+	    	student.setBoard(game.getBoard());
 	    	boolean fend = false;
 		    int x = e.getX();
 	        int y = e.getY();
 	        Point p = new Point();
 	        if(this.flag==1) {
-	        	student.setBoard(game.getBoard());
-	        	p = student.getMove();
+	        	
+	        	p = student.getMoveV();
 	        	x = p.x  * 200 + 50;
 	        	y = p.y * 200 + 50;
 	        	Point mov = new Point(x/200,y/200);
+
 		        if(!game.play(mov,student.getJug())) {
 		        	return;
 		        }
 	        }else {
 	        	Point mov = new Point(x/200,y/200);
-		        if(!game.play(mov,student.getJug()*-1)) {
+		        if(!game.play(mov,-1)) {
 		        	return;
 		        }
+
 	        }
         	int end = game.hasEnded();
     		if(end!=-2) {
     			student.setBoard(game.getBoard());
-       			student.learn(end);		
+       			student.learn(end);	
     			game.clearBoard();
  
     			fend = true;
@@ -252,8 +262,8 @@ import learning.YoungGrasshopper;
 	        flag*=-1;
 	        if(fend) {
 	        	 this.f.dispose();
-	        	 student.printWeights();
-	        	 startGameApplet();
+	        	 
+	        	 new GameApplet(student,flag);
 		    }
 	        }
 	        	

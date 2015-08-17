@@ -13,6 +13,7 @@ public class Saver {
 
 	public static void learningCurve(List<Integer> history,String fileName) {
 		FileWriter writer;
+		
 		try {
 			writer = new FileWriter(s2+fileName+".csv");
 		
@@ -20,7 +21,7 @@ public class Saver {
 			 while(it.hasNext()) {
 				writer.append(it.next().toString());
 				if(it.hasNext())
-					writer.append(",");
+					writer.append("\n");
 			 }	
 		  
 				
@@ -37,7 +38,9 @@ public class Saver {
 	
 	
 	public static boolean fileExists(String name) {
+		
 		File f = new File(s+name+".ser");
+		
 		return f.exists();
 	}
 	public static void check() {

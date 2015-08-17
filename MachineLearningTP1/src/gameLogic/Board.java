@@ -8,6 +8,12 @@ public class Board {
 	
 	public void put(Point mov,int jug) {
 			this.board[mov.x][mov.y] = jug ;
+			try{
+				check();
+			}catch(LaCagueException e){
+				e.printStackTrace();
+				System.exit(-1);
+			}
 	}
 	
 	public int get(Point mov) {
@@ -44,11 +50,26 @@ public class Board {
 		}
 		
 	}
+	public void check() throws LaCagueException {
+		int sum = 0;
+		for(int i = 0 ; i < 3 ; i++)
+			for(int j = 0 ; j < 3 ; j++)
+				sum += board[i][j];
+		
+		if(Math.abs(sum)>1) {
+			System.out.println("error");
+			print();
+			throw new LaCagueException();
+		}
+	}
+	
 	
 	public  void clearBoard() {
 		for(int i=0;i<3;i++)
 			for(int j=0;j<3;j++)
 				this.board[i][j]=0;
+		
+
 	}
 	
 	public void print() {

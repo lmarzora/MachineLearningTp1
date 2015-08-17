@@ -13,7 +13,7 @@ public class Sensei {
 	double train;
 	
 	public Sensei() {
-		this.train = 0.005;
+		this.train = 0.001;
 	}
 	
 	public double[] teach(Deque<int[]> game, double end , double[] weights) {
@@ -45,7 +45,7 @@ public class Sensei {
 	private double[] updateWeights(List<TrainExample> examples , double[] weights) {
 
 		for (TrainExample trainExample : examples) {
-			for (int i = 0 ; i < 6 ; i++) {
+			for (int i = 0 ; i < 8 ; i++) {
 				weights[i] = weights[i] + train*(trainExample.val - vAprox(trainExample.vars,weights))*trainExample.vars[i];
 			}
 		}
@@ -62,13 +62,16 @@ public class Sensei {
 		System.out.println("");
 	}
 	double vAprox(int[] vars, double[] weights) {
-						
-		return weights[0]*vars[0] + weights[1]*vars[1] + weights[2]*vars[2]*vars[2] + weights[3]*vars[3]*vars[3] +weights[4]*vars[4]*vars[4]*vars[4]  ;
+		double v = 0;
+		for(int i = 0 ; i < 8 ; i ++) {
+			v+=vars[i]*weights[i];
+		}
+		return v;
 	}
 	
 	int [] getVars(Board board ,int jug) {
 		
-		int [] vars = new int[6];
+		int [] vars = new int[8];
 		for (int i : vars) {
 			i = 0;
 		}
@@ -108,13 +111,22 @@ public class Sensei {
 			if(sum==1*jug) {
 				if(check0==0)
 					vars[0]++;
+				else
+					vars[5]++;
 			}
 			
+			
+			
 			//lineas abiertas adversario
+			
 			if(sum==-1*jug) {
-				if(check0==0)
+				if(check0==0) {
 					vars[1]++;
+				}
+				else 
+					vars[6]++;
 			}
+			
 			
 			//lineas casi com'pletas mias
 			if(sum==2*jug) {
@@ -130,15 +142,16 @@ public class Sensei {
 			}
 			
 			//gane
+			
 			if(sum==3*jug) {
 				vars[4]++;
 			}
 			//perdi
-			if(sum==-3*jug) {
-				vars[5]++;
-			}
+			
 
 		}
+		else
+			vars[7]++;
 		return vars;
 	}
 		
